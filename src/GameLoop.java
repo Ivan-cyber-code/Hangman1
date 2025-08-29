@@ -26,13 +26,12 @@ public class GameLoop {
     }
 
     static boolean letter_contins_magicWord(String letter, String magicWord) {
-        if (magicWord.contains(letter)) {
+        if (magicWord.toLowerCase().contains(letter.toLowerCase())) {
             return true;
         } else {
             return false;
-        }
+        } // внести изменение с учетом регистра буквы
     }
-
 
     static void start_game() {
 
@@ -65,7 +64,7 @@ public class GameLoop {
 
                 letter = check_condition(flag1, flag2, flag3, letter);
 
-                Input.list_input_letter.add(letter);  //внести корретный ввод в список
+                Input.list_input_letter.add(letter.toLowerCase());  //внести корретный ввод в список
 
                 boolean flag4 = letter_contins_magicWord(letter, magicWord); // 1. проверить символ содержится ли в магическо слове
 
@@ -82,6 +81,7 @@ public class GameLoop {
 
                     if (count_error == 6) {
                         Annotation.the_end_game();
+                        Input.list_input_letter.clear();
                         break GAME_LOOP;
                     }
 
@@ -97,6 +97,7 @@ public class GameLoop {
 
                     if (tablo.toString().equals(magicWord)) {
                         Annotation.the_win_game();
+                        Input.list_input_letter.clear();
                         break GAME_LOOP;
                     }
 
