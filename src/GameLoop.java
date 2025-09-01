@@ -3,113 +3,106 @@
 public class GameLoop {
 
 
-    static String check_condition(boolean f1, boolean f2, boolean f3, String letter) {
-        while (!f1 || !f2 || !f3) {
+    static String CheckTheletterCorrectness(boolean ThisOneLetter, boolean ThisLetterContainsRassianAlphabet, boolean ThisLetterRepid, String letter) {
+        while (!ThisOneLetter || !ThisLetterContainsRassianAlphabet || ThisLetterRepid) {
             System.out.println("Некорректный ввод:");
-            if (!f1) {
+            if (!ThisOneLetter) {
                 System.out.println("-Введено больше одного символа");
             }
 
-            if (!f2 && f1) {
+            if (!ThisLetterContainsRassianAlphabet && ThisOneLetter) {
                 System.out.println("-Символ не принадлежит к русскому алфавиту");
             }
 
-            if (!f3) {
-                System.out.println("Напоминаю что вы уже вводили буквы: "+Input.list_input_letter);
+            if (ThisLetterRepid) {
+                System.out.println("Напоминаю что вы уже вводили буквы: " + Input.listOfEnteredLetters);
                 System.out.println("Попробуйте ввести другую букву");
             }
-            letter = Input.input();
-            if (letter.toLowerCase().equals("ё")){
-                letter="е";
+            letter = Input.acceptCharacterFromKeyboard();
+            if (letter.equalsIgnoreCase("ё")) {
+                letter = "е";
             }
-            f1 = Input.input_chek_letter_lenght(letter); //введен только один символ
-            f2 = Input.input_chek_alfavit(letter);  //проверить корретиность ввода на принадлежность к русскому алфавиту
-            f3 = Input.input_chek_letter_new(letter);
+            ThisOneLetter = Input.checkLenghtLetter(letter);
+            ThisLetterContainsRassianAlphabet = Input.checkForContainsRassianAlphabet(letter);
+            ThisLetterRepid = Input.checkLetterRepeatability(letter);
         }
         return letter;
     }
 
-    static boolean letter_contins_magicWord(String letter, String magicWord) {
-        if (magicWord.toLowerCase().contains(letter.toLowerCase())) {
-            return true;
-        } else {
-            return false;
-        } // внести изменение с учетом регистра буквы
+    static boolean letterContainsMagicWord(String letter, String magicWord) {
+        return magicWord.toLowerCase().contains(letter.toLowerCase());
     }
 
     static void start_game() {
 
         THE_END_OR_START_GAME:
-        while (Input.startGame()) {
+        while (Input.startOrEndGame()) {
 
-            Annotation.show_rules_game();//объяснить правила
+            Annotation.showRulesGame();//объяснить правила
 
-            String magicWord = MagiсWordAndTablo.guess_a_word();//загадать слово
+            String magicWord = Magiс.guessAWord();//загадать слово
 
             if (magicWord == null) {
                 break;// конец игры, проверить корректность словаря
             }
 
-            int count_error = 0;
+            int countError = 0;
 
-            StringBuilder tablo = MagiсWordAndTablo.make_start_tablo(magicWord);// создать пустое табло
+            StringBuilder tablo = Magiс.makeABlankTablo(magicWord);// создать пустое табло
 
             GAME_LOOP:
             while (true) {
 
                 //ввести букву с клавиатуры
-                String letter = Input.input();
+                String letter = Input.acceptCharacterFromKeyboard();
 
-                if (letter.toLowerCase().equals("ё")){
-                    letter="е";
+                if (letter.equalsIgnoreCase("ё")) {
+                    letter = "е";
                 }
 
-                boolean flag1 = Input.input_chek_letter_lenght(letter);     //введен только один символ
+                boolean ThisOneLetter = Input.checkLenghtLetter(letter);
 
-                boolean flag2 = Input.input_chek_alfavit(letter);  //проверить корретиность ввода на принадлежность к русскому алфавиту
+                boolean ThisLetterContainsRassianAlphabet = Input.checkForContainsRassianAlphabet(letter);
 
-                boolean flag3 = Input.input_chek_letter_new(letter);     //вводили мы уже эту букву?
+                boolean ThisLetterRepid = Input.checkLetterRepeatability(letter);
 
-                letter = check_condition(flag1, flag2, flag3, letter);
+                letter = CheckTheletterCorrectness(ThisOneLetter, ThisLetterContainsRassianAlphabet, ThisLetterRepid, letter);
 
-                Input.list_input_letter.add(letter.toLowerCase());  //внести корретный ввод в список
+                Input.listOfEnteredLetters.add(letter.toLowerCase());
 
-                boolean flag4 = letter_contins_magicWord(letter, magicWord); // 1. проверить символ содержится ли в магическо слове
+                boolean ThisLetterContainseMagicWord = letterContainsMagicWord(letter, magicWord);
 
-                if (flag4 == false) {
+                if (!ThisLetterContainseMagicWord) {
 
-                    // 2. Если нет то открываем счётчик ошибок, рисуем виселицу. Просим ввести повторно.
-                    // 2.1 После получения колличества ошибок проверяем на допустимое значение и в случае выхода за границу начинаем новый итерейшен.
-
-                    count_error++;
+                    countError++;
 
                     System.out.println("Сожалею, но у вас не получилось отгадать букву");
 
-                    Graphics.show_gsllows(count_error);
+                    Graphics.showHangman(countError);
 
-                    if (count_error == 6) {
-                        Annotation.the_end_game();
+                    if (countError == 6) {
+                        Annotation.theEndGame();
                         System.out.println(magicWord);
-                        System.out.println();
-                        System.out.println();
-                        System.out.println();
-                        Input.list_input_letter.clear();
+                        System.out.println("""
+                                                                \s
+                                                                \s
+                                \s
+                                """);
+                        Input.listOfEnteredLetters.clear();
                         break GAME_LOOP;
                     }
 
-                    System.out.println(String.format("Попробуйте еще раз, у вас осталось попыток: %d", 6 - count_error));
+                    System.out.printf("Попробуйте еще раз, у вас осталось попыток: %d%n", 6 - countError);
 
                 } else {
-                    // 3. Еесли да, открываем табло в формате ****А*А. Просим ввести повторно.
-                    //// 3.1 После открытия буквы проверяем табло == загаданному слову: если да начинаем новй итерейшен цикла, если нет просим ввести повторно.
 
-                    tablo = MagiсWordAndTablo.make_new_tablo(letter, magicWord, tablo);
+                    tablo = Magiс.showTheTabloBasedOnTheGuessedLetter(letter, magicWord, tablo);
 
-                    Annotation.show_tablo(tablo);
+                    Annotation.showTablo(tablo);
 
                     if (tablo.toString().equals(magicWord)) {
-                        Annotation.the_win_game();
-                        Input.list_input_letter.clear();
+                        Annotation.theWinGame();
+                        Input.listOfEnteredLetters.clear();
                         break GAME_LOOP;
                     }
 
@@ -125,12 +118,5 @@ public class GameLoop {
 
         start_game();
 
-//        System.out.println(String.format("Попробуйте еще раз, у вас осталось попыток: %d", 0+1));
-//        System.out.println(MagiсWord.make_tablo("ffff"));
-//        System.out.println(MagiсWord.show_tablo("a","aba",new StringBuilder("___")));
-//        Graphics.show_gsllows(5);//test
-//        System.out.println(letter_contins_magicWord("a", "amc")); // test
-//        System.out.println(MagiсWord.guess_a_word()); // test
-//        System.out.println("abc".contains("A".toLowerCase())); // test
     }
 }
