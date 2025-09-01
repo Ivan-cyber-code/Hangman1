@@ -3,16 +3,14 @@ public class Annotation {
     public static void show_rules_game() {
         System.out.println("Добро пожаловать в игру виселица");
         System.out.println("Правила игры:");
-        System.out.println("Нужно отгадать загаданное слово за 5 попыток.");
-        System.out.println("За каждую неверную введеную букву вы будете терять одну попытку");
+        System.out.println("Нужно отгадать слово.");
+        System.out.println("У тебя есть только 6 попыток что бы ошибиться.");
+        System.out.println("ПРИМЕЧАНИЕ: буква 'ё' приравнивается к букве 'е'");
     }
 
     public static void the_end_game(){
-        System.out.println("Сожалею, но у вас не получилось отгадать слово.");
-        System.out.println("Вы проиграли.");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
+        System.out.println("Сожалею, но вы проиграли.");
+        System.out.print("Было загадано слово: ");
     }
 
     public static void the_win_game(){

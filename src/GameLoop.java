@@ -10,14 +10,18 @@ public class GameLoop {
                 System.out.println("-Введено больше одного символа");
             }
 
-            if (!f2) {
+            if (!f2 && f1) {
                 System.out.println("-Символ не принадлежит к русскому алфавиту");
             }
 
             if (!f3) {
-                System.out.println("-Вы уже вводили эту букву");
+                System.out.println("Напоминаю что вы уже вводили буквы: "+Input.list_input_letter);
+                System.out.println("Попробуйте ввести другую букву");
             }
             letter = Input.input();
+            if (letter.toLowerCase().equals("ё")){
+                letter="е";
+            }
             f1 = Input.input_chek_letter_lenght(letter); //введен только один символ
             f2 = Input.input_chek_alfavit(letter);  //проверить корретиность ввода на принадлежность к русскому алфавиту
             f3 = Input.input_chek_letter_new(letter);
@@ -56,6 +60,10 @@ public class GameLoop {
                 //ввести букву с клавиатуры
                 String letter = Input.input();
 
+                if (letter.toLowerCase().equals("ё")){
+                    letter="е";
+                }
+
                 boolean flag1 = Input.input_chek_letter_lenght(letter);     //введен только один символ
 
                 boolean flag2 = Input.input_chek_alfavit(letter);  //проверить корретиность ввода на принадлежность к русскому алфавиту
@@ -81,6 +89,10 @@ public class GameLoop {
 
                     if (count_error == 6) {
                         Annotation.the_end_game();
+                        System.out.println(magicWord);
+                        System.out.println();
+                        System.out.println();
+                        System.out.println();
                         Input.list_input_letter.clear();
                         break GAME_LOOP;
                     }
