@@ -1,6 +1,6 @@
-public class Annotation {
+ class Annotation {
 
-    public static void showRulesGame() {
+     static void showRulesGame() {
         System.out.println("""
                 Добро пожаловать в игру виселица:
                 Правила игры:
@@ -10,14 +10,14 @@ public class Annotation {
                 """);
     }
 
-    public static void theEndGame() {
+     static void theEndGame() {
         System.out.print("""
                 Сожалею, но вы проиграли.
                 Было загадано слово:
                 """);
     }
 
-    public static void theWinGame() {
+     static void theWinGame() {
         System.out.println("""
                 Поздравляю!
                 Ты выйграл!
@@ -26,7 +26,7 @@ public class Annotation {
                 """);
     }
 
-    public static void showTablo(StringBuilder tablo) {
+     static void showTablo(StringBuilder tablo) {
         System.out.println("""
                 Поздравляю вы отгадали букву!
                 Внимание на табло!

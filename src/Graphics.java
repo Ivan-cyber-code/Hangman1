@@ -1,5 +1,5 @@
-public class Graphics {
-    public static void showHangman(int count_error) {
+ class Graphics {
+     static void showHangman(int count_error) {
         switch (count_error) {
 
             case 6:
