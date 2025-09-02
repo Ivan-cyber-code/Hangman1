@@ -33,27 +33,24 @@ public class GameLoop {
         return magicWord.toLowerCase().contains(letter.toLowerCase());
     }
 
-    static void start_game() {
+    static void gameLoop() {
 
-        THE_END_OR_START_GAME:
         while (Input.startOrEndGame()) {
 
-            Annotation.showRulesGame();//объяснить правила
+            Annotation.showRulesGame();
 
-            String magicWord = Magiс.guessAWord();//загадать слово
+            String magicWord = Magic.guessAWord();
 
             if (magicWord == null) {
-                break;// конец игры, проверить корректность словаря
+                break;
             }
 
             int countError = 0;
 
-            StringBuilder tablo = Magiс.makeABlankTablo(magicWord);// создать пустое табло
+            StringBuilder tablo = Magic.makeABlankTablo(magicWord);
 
-            GAME_LOOP:
             while (true) {
 
-                //ввести букву с клавиатуры
                 String letter = Input.acceptCharacterFromKeyboard();
 
                 if (letter.equalsIgnoreCase("ё")) {
@@ -89,21 +86,21 @@ public class GameLoop {
                                 \s
                                 """);
                         Input.listOfEnteredLetters.clear();
-                        break GAME_LOOP;
+                        break;
                     }
 
                     System.out.printf("Попробуйте еще раз, у вас осталось попыток: %d%n", 6 - countError);
 
                 } else {
 
-                    tablo = Magiс.showTheTabloBasedOnTheGuessedLetter(letter, magicWord, tablo);
+                    tablo = Magic.showTheTabloBasedOnTheGuessedLetter(letter, magicWord, tablo);
 
                     Annotation.showTablo(tablo);
 
                     if (tablo.toString().equals(magicWord)) {
                         Annotation.theWinGame();
                         Input.listOfEnteredLetters.clear();
-                        break GAME_LOOP;
+                        break;
                     }
 
                 }
@@ -116,7 +113,7 @@ public class GameLoop {
 
     public static void main(String[] args) {
 
-        start_game();
+        gameLoop();
 
     }
 }

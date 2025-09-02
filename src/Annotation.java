@@ -13,15 +13,16 @@ public class Annotation {
     public static void theEndGame() {
         System.out.print("""
                 Сожалею, но вы проиграли.
-                Было загадано слово:""");
+                Было загадано слово:
+                """);
     }
 
     public static void theWinGame() {
         System.out.println("""
                 Поздравляю!
-                Ты выйграл!  
-                
-               
+                Ты выйграл!
+                \s
+                \s
                 """);
     }
 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
-class Magiс {
+class Magic {
 
     static String guessAWord() {
 
